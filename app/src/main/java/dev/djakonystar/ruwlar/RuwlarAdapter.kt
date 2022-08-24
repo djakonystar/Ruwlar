@@ -21,6 +21,7 @@ class RuwlarAdapter : RecyclerView.Adapter<RuwlarAdapter.RuwlarViewHolder>() {
         fun bind(ruw: Ruw) {
             binding.tvName.text = ruw.name
             binding.ivGoto.isVisible = ruw.hasChildren == 1
+            binding.root.isEnabled = ruw.hasChildren == 1
 
             binding.root.setOnClickListener {
                 onItemClick.invoke(ruw)

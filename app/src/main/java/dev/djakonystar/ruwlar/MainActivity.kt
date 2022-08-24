@@ -13,7 +13,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var ruwlarDatabase: RuwlarDatabase
     private lateinit var ruwlarDao: RuwlarDao
-    private val adapter by lazy { RuwlarAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,13 +22,9 @@ class MainActivity : AppCompatActivity() {
         ruwlarDatabase = RuwlarDatabase.getInstance(this)
         ruwlarDao = ruwlarDatabase.ruwlarDao()
 
-        binding.recyclerView.adapter = adapter
-
-        getNewRuwlar(0)
-
-        adapter.setOnItemClickListener {
-            getNewRuwlar(it.id)
-        }
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, MainFragment())
+            .commit()
     }
 
     override fun onBackPressed() {
@@ -39,16 +34,7 @@ class MainActivity : AppCompatActivity() {
             finish()
         } else {
             val grandParentId = ruwlarDao.getParentId(parentId)
-            getNewRuwlar(grandParentId)
-        }
-    }
-
-    fun getNewRuwlar(id: Int) {
-        val newRuwlar = ruwlarDao.getRuwlarByParentId(id)
-        adapter.models = newRuwlar
-
-        newRuwlar.firstOrNull()?.let {
-            sharedPreferences.edit().putInt(PARENT_ID, it.parentId).apply()
+            Provider.getNewRuwlar(this, grandParentId)
         }
     }
 }

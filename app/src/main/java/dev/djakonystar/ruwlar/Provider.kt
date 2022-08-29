@@ -21,4 +21,9 @@ object Provider {
         val newRuwlar = ruwlarDao.getRuwlarByParentId(id)
         mutableNewList.value = newRuwlar
     }
+
+    fun searchRuw(searchValue: String) {
+        val result = ruwlarDao.searchRuw(searchValue)
+        mutableNewList.value = result
+    }
 }

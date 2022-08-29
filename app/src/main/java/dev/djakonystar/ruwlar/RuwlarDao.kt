@@ -11,4 +11,7 @@ interface RuwlarDao {
 
     @Query("SELECT parent_id FROM ruwlar WHERE id = :id")
     fun getParentId(id: Int): Int
+
+    @Query("SELECT * FROM ruwlar WHERE name like :searchValue")
+    fun searchRuw(searchValue: String): List<Ruw>
 }

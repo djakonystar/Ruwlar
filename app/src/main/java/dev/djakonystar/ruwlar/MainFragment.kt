@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import dev.djakonystar.ruwlar.databinding.FragmentMainBinding
 
@@ -20,6 +21,15 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         sharedPreferences = requireActivity().getSharedPreferences("Ruwlar", Context.MODE_PRIVATE)
 
         binding.recyclerView.adapter = adapter
+
+        binding.etSearch.addTextChangedListener {
+            val searchValue = it.toString()
+            if (searchValue.isNotBlank()) {
+                Provider.searchRuw("%$searchValue%")
+            } else {
+                Provider.getNewRuwlar(requireContext(), 0)
+            }
+        }
 
         Provider.getNewRuwlar(requireContext(), 0)
 
